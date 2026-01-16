@@ -6,7 +6,10 @@ import com.germs.germs_auth.entity.User;
 import com.germs.germs_auth.repository.CompanyRepository;
 import com.germs.germs_auth.repository.RoleRepository;
 import com.germs.germs_auth.repository.UserRepository;
+import com.germs.germs_auth.security.JwtUtil;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -23,6 +26,7 @@ public class AuthService {
         this.companyRepository = companyRepository;
     }
 
+    // ================= REGISTER =================
     public User registerUser(String name,
                              String email,
                              String password,
@@ -38,11 +42,29 @@ public class AuthService {
         User user = new User();
         user.setName(name);
         user.setEmail(email);
-        user.setPassword(password); // plain for now (encryption later)
+        user.setPassword(password); // plain for now
         user.setRole(role);
         user.setCompany(company);
 
         return userRepository.save(user);
     }
-}
 
+    // ================= LOGIN =================
+    public String login(String email, String password) {
+
+        Optional<User> userOpt = userRepository.findByEmail(email);
+
+        if (userOpt.isEmpty()) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        User user = userOpt.get();
+
+        if (!user.getPassword().equals(password)) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        // JWT token generation
+        return JwtUtil.generateToken(user.getEmail());
+    }
+}

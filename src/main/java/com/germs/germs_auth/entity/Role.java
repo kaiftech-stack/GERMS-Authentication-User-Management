@@ -1,6 +1,7 @@
 package com.germs.germs_auth.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "roles")
@@ -12,6 +13,10 @@ public class Role {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    // 🔽 ADD THIS
+    @OneToMany(mappedBy = "role")
+    private List<User> users;
 
     // Constructors
     public Role() {
@@ -37,5 +42,12 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
-}
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+}
