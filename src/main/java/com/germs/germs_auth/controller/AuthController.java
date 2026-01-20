@@ -2,10 +2,9 @@ package com.germs.germs_auth.controller;
 
 import com.germs.germs_auth.entity.User;
 import com.germs.germs_auth.service.AuthService;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import com.germs.germs_auth.dto.LoginRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,12 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(
-            @RequestParam String email,
-            @RequestParam String password
-    ) {
-        return authService.login(email, password);
+    public String login(@Valid @RequestBody LoginRequest request) {
+        return authService.login(request.getEmail(), request.getPassword());
     }
-
 }
-

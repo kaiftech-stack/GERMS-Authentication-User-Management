@@ -8,6 +8,7 @@ import com.germs.germs_auth.repository.RoleRepository;
 import com.germs.germs_auth.repository.UserRepository;
 import com.germs.germs_auth.security.JwtUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -17,16 +18,19 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final CompanyRepository companyRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthService(UserRepository userRepository,
                        RoleRepository roleRepository,
-                       CompanyRepository companyRepository) {
+                       CompanyRepository companyRepository,
+                       PasswordEncoder passwordEncoder) {
+
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.companyRepository = companyRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    // ================= REGISTER =================
     public User registerUser(String name,
                              String email,
                              String password,
@@ -42,14 +46,13 @@ public class AuthService {
         User user = new User();
         user.setName(name);
         user.setEmail(email);
-        user.setPassword(password); // plain for now
+        user.setPassword(passwordEncoder.encode(password));
         user.setRole(role);
         user.setCompany(company);
 
         return userRepository.save(user);
     }
 
-    // ================= LOGIN =================
     public String login(String email, String password) {
 
         Optional<User> userOpt = userRepository.findByEmail(email);
@@ -60,11 +63,10 @@ public class AuthService {
 
         User user = userOpt.get();
 
-        if (!user.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Invalid email or password");
         }
 
-        // JWT token generation
         return JwtUtil.generateToken(user.getEmail());
     }
 }
