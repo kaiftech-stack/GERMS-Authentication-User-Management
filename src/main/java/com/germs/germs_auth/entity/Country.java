@@ -13,19 +13,15 @@ public class Country {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false, unique = true)
-    private String countryCode;
+    private String currency;
+    private String timeZone;
 
-    // Constructors
-    public Country() {
-    }
+    // ✅ Labor rules
+    private Integer maxWorkingHoursPerDay;
+    private Double minimumSalary;
 
-    public Country(String name, String countryCode) {
-        this.name = name;
-        this.countryCode = countryCode;
-    }
+    public Country() {}
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -42,12 +38,35 @@ public class Country {
         this.name = name;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public Integer getMaxWorkingHoursPerDay() {
+        return maxWorkingHoursPerDay;
+    }
+
+    public void setMaxWorkingHoursPerDay(Integer maxWorkingHoursPerDay) {
+        this.maxWorkingHoursPerDay = maxWorkingHoursPerDay;
+    }
+
+    public Double getMinimumSalary() {
+        return minimumSalary;
+    }
+
+    public void setMinimumSalary(Double minimumSalary) {
+        this.minimumSalary = minimumSalary;
     }
 }
-

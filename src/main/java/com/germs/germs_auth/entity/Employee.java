@@ -1,10 +1,6 @@
 package com.germs.germs_auth.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "employees")
@@ -14,15 +10,15 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String firstName;
-
-    @NotBlank
     private String lastName;
 
-    @Email
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
+
+    // ✅ Day 13 fields
+    private Integer workingHoursPerDay;
+    private Double salary;
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
@@ -32,15 +28,8 @@ public class Employee {
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
+    public Employee() {}
 
-    // Constructors
-    public Employee() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -73,6 +62,22 @@ public class Employee {
         this.email = email;
     }
 
+    public Integer getWorkingHoursPerDay() {
+        return workingHoursPerDay;
+    }
+
+    public void setWorkingHoursPerDay(Integer workingHoursPerDay) {
+        this.workingHoursPerDay = workingHoursPerDay;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -88,9 +93,4 @@ public class Employee {
     public void setCountry(Country country) {
         this.country = country;
     }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 }
-
