@@ -10,26 +10,22 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstName;
-    private String lastName;
+    @Column(nullable = false)
+    private String name;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    // ✅ Day 13 fields
-    private Integer workingHoursPerDay;
-    private Double salary;
+    @Column(nullable = false)
+    private String country;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company;
+    @Column(nullable = false)
+    private Long companyId;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
-    private Country country;
-
+    // 🔹 Constructors
     public Employee() {}
 
+    // 🔹 Getters & Setters
     public Long getId() {
         return id;
     }
@@ -38,20 +34,12 @@ public class Employee {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -62,35 +50,19 @@ public class Employee {
         this.email = email;
     }
 
-    public Integer getWorkingHoursPerDay() {
-        return workingHoursPerDay;
-    }
-
-    public void setWorkingHoursPerDay(Integer workingHoursPerDay) {
-        this.workingHoursPerDay = workingHoursPerDay;
-    }
-
-    public Double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public Country getCountry() {
+    public String getCountry() {
         return country;
     }
 
-    public void setCountry(Country country) {
+    public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 }

@@ -1,59 +1,52 @@
 package com.germs.germs_auth.service;
 
-import com.germs.germs_auth.entity.Company;
-import com.germs.germs_auth.entity.Country;
 import com.germs.germs_auth.entity.Employee;
-import com.germs.germs_auth.repository.CompanyRepository;
-import com.germs.germs_auth.repository.CountryRepository;
 import com.germs.germs_auth.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final CompanyRepository companyRepository;
-    private final CountryRepository countryRepository;
-    private final CountryValidationService countryValidationService;
 
-    public EmployeeService(EmployeeRepository employeeRepository,
-                           CompanyRepository companyRepository,
-                           CountryRepository countryRepository,
-                           CountryValidationService countryValidationService) {
+    public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.companyRepository = companyRepository;
-        this.countryRepository = countryRepository;
-        this.countryValidationService = countryValidationService;
     }
 
-    public Employee onboardEmployee(String firstName,
-                                    String lastName,
-                                    String email,
-                                    Integer workingHours,
-                                    Double salary,
-                                    Long companyId,
-                                    Long countryId) {
-
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(() -> new RuntimeException("Company not found"));
-
-        Country country = countryRepository.findById(countryId)
-                .orElseThrow(() -> new RuntimeException("Country not found"));
-
-        // ✅ Country-based validation
-        countryValidationService.validateEmployeeAgainstCountryRules(
-                country, workingHours, salary
-        );
-
-        Employee employee = new Employee();
-        employee.setFirstName(firstName);
-        employee.setLastName(lastName);
-        employee.setEmail(email);
-        employee.setWorkingHoursPerDay(workingHours);
-        employee.setSalary(salary);
-        employee.setCompany(company);
-        employee.setCountry(country);
-
+    // CREATE (Onboarding - Day 12)
+    public Employee save(Employee employee) {
         return employeeRepository.save(employee);
+    }
+
+    // UPDATE (Day 15)
+    public Employee updateEmployee(Long id, Employee updatedEmployee) {
+
+        Employee existing = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        // ✅ SAFE FIELDS TO UPDATE
+        existing.setName(updatedEmployee.getName());
+        existing.setEmail(updatedEmployee.getEmail());
+        existing.setCountry(updatedEmployee.getCountry());
+
+        return employeeRepository.save(existing);
+    }
+
+    // VIEW BY ID
+    public Employee getById(Long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    }
+
+    // LIST ALL
+    public List<Employee> getAll() {
+        return employeeRepository.findAll();
+    }
+
+    // LIST BY COMPANY
+    public List<Employee> getByCompany(Long companyId) {
+        return employeeRepository.findByCompanyId(companyId);
     }
 }
