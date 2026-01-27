@@ -16,8 +16,10 @@ public class Employee {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private String country;
+    // ✅ Proper country mapping (for Day 13–17)
+    @ManyToOne
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
 
     @Column(nullable = false)
     private Long companyId;
@@ -38,7 +40,7 @@ public class Employee {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) {   // ✅ FIXED setName issue
         this.name = name;
     }
 
@@ -50,11 +52,11 @@ public class Employee {
         this.email = email;
     }
 
-    public String getCountry() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 

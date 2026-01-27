@@ -4,8 +4,6 @@ import com.germs.germs_auth.entity.Payroll;
 import com.germs.germs_auth.service.PayrollService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/payroll")
 public class PayrollController {
@@ -19,18 +17,8 @@ public class PayrollController {
     @PostMapping("/generate")
     public Payroll generatePayroll(
             @RequestParam Long employeeId,
-            @RequestParam Double basic,
-            @RequestParam Double allowances,
-            @RequestParam Double deductions,
-            @RequestParam String country
-    ) {
-        return payrollService.createPayroll(
-                employeeId, basic, allowances, deductions, country
-        );
-    }
+            @RequestParam double basicSalary) {
 
-    @GetMapping("/employee/{employeeId}")
-    public List<Payroll> getEmployeePayrolls(@PathVariable Long employeeId) {
-        return payrollService.getEmployeePayrolls(employeeId);
+        return payrollService.generatePayroll(employeeId, basicSalary);
     }
 }

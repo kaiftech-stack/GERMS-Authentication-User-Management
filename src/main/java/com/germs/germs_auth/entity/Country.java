@@ -10,63 +10,25 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     private String currency;
     private String timeZone;
 
-    // ✅ Labor rules
-    private Integer maxWorkingHoursPerDay;
-    private Double minimumSalary;
+    // ✅ Tax percentage (example: 10 = 10%)
+    private double taxPercentage;
 
-    public Country() {}
+    // Getters & Setters
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getCurrency() { return currency; }
+    public String getTimeZone() { return timeZone; }
+    public double getTaxPercentage() { return taxPercentage; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
-    }
-
-    public Integer getMaxWorkingHoursPerDay() {
-        return maxWorkingHoursPerDay;
-    }
-
-    public void setMaxWorkingHoursPerDay(Integer maxWorkingHoursPerDay) {
-        this.maxWorkingHoursPerDay = maxWorkingHoursPerDay;
-    }
-
-    public Double getMinimumSalary() {
-        return minimumSalary;
-    }
-
-    public void setMinimumSalary(Double minimumSalary) {
-        this.minimumSalary = minimumSalary;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setCurrency(String currency) { this.currency = currency; }
+    public void setTimeZone(String timeZone) { this.timeZone = timeZone; }
+    public void setTaxPercentage(double taxPercentage) { this.taxPercentage = taxPercentage; }
 }
