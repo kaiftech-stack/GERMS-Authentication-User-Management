@@ -1,6 +1,6 @@
 package com.germs.germs_auth.controller;
 
-import com.germs.germs_auth.entity.Payroll;
+import com.germs.germs_auth.entity.PayrollSummary;
 import com.germs.germs_auth.service.PayrollService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +15,15 @@ public class PayrollController {
     }
 
     @PostMapping("/generate")
-    public Payroll generatePayroll(
+    public PayrollSummary generatePayroll(
             @RequestParam Long employeeId,
-            @RequestParam double basicSalary) {
-
-        return payrollService.generatePayroll(employeeId, basicSalary);
+            @RequestParam String month,
+            @RequestParam double baseSalary,
+            @RequestParam int payableDays,
+            @RequestParam double taxRate
+    ) {
+        return payrollService.generatePayroll(
+                employeeId, month, baseSalary, payableDays, taxRate
+        );
     }
 }

@@ -1,41 +1,36 @@
 package com.germs.germs_auth.service;
 
-import com.germs.germs_auth.entity.*;
-import com.germs.germs_auth.repository.*;
+import com.germs.germs_auth.entity.PayrollSummary;
+import com.germs.germs_auth.repository.PayrollSummaryRepository;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Service
 public class PayrollService {
 
-    private final PayrollRepository payrollRepository;
-    private final EmployeeRepository employeeRepository;
+    private final PayrollSummaryRepository payrollSummaryRepository;
 
-    public PayrollService(PayrollRepository payrollRepository,
-                          EmployeeRepository employeeRepository) {
-        this.payrollRepository = payrollRepository;
-        this.employeeRepository = employeeRepository;
+    public PayrollService(PayrollSummaryRepository payrollSummaryRepository) {
+        this.payrollSummaryRepository = payrollSummaryRepository;
     }
 
-    // ✅ Country-based payroll calculation
-    public Payroll generatePayroll(Long employeeId, double basicSalary) {
+    public PayrollSummary generatePayroll(
+            Long employeeId,
+            String month,
+            double baseSalary,
+            int payableDays,
+            double taxRate
+    ) {
+        double taxAmount = baseSalary * taxRate;
+        double netSalary = baseSalary - taxAmount;
 
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        PayrollSummary summary = new PayrollSummary();
+        summary.setEmployeeId(employeeId);
+        summary.setMonth(month);
+        summary.setBaseSalary(baseSalary);
+        summary.setPayableDays(payableDays);
+        summary.setTaxAmount(taxAmount);
+        summary.setNetSalary(netSalary);
 
-        Country country = employee.getCountry();
-
-        double tax = (basicSalary * country.getTaxPercentage()) / 100;
-        double netSalary = basicSalary - tax;
-
-        Payroll payroll = new Payroll();
-        payroll.setEmployee(employee);
-        payroll.setBasicSalary(basicSalary);
-        payroll.setTaxAmount(tax);
-        payroll.setNetSalary(netSalary);
-        payroll.setPayrollDate(LocalDate.now());
-
-        return payrollRepository.save(payroll);
+        return payrollSummaryRepository.save(summary);
     }
 }
