@@ -1,5 +1,5 @@
 package com.germs.germs_auth.entity;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +11,7 @@ public class PayrollSummary {
     private Long id;
 
     private Long employeeId;
+    @Column(name = "pay_month")
     private String month;
     private double baseSalary;
     private int payableDays;

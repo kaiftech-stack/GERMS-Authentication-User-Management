@@ -19,23 +19,22 @@ public class AuthService {
     private final RoleRepository roleRepository;
     private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public AuthService(UserRepository userRepository,
                        RoleRepository roleRepository,
                        CompanyRepository companyRepository,
-                       PasswordEncoder passwordEncoder) {
-
+                       PasswordEncoder passwordEncoder,
+                       JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.companyRepository = companyRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
-    public User registerUser(String name,
-                             String email,
-                             String password,
-                             Long roleId,
-                             Long companyId) {
+    public User registerUser(String name, String email, String password,
+                             Long roleId, Long companyId) {
 
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
@@ -67,6 +66,6 @@ public class AuthService {
             throw new RuntimeException("Invalid email or password");
         }
 
-        return JwtUtil.generateToken(user.getEmail());
+        return jwtUtil.generateToken(user.getEmail());
     }
 }

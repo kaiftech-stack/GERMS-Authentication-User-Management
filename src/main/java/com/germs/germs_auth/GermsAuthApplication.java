@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GermsAuthApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GermsAuthApplication.class, args);
+        SpringApplication.run(GermsAuthApplication.class, args);
 	}
 
 }

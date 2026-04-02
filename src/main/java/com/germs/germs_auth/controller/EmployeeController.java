@@ -16,6 +16,12 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    // ONBOARD NEW EMPLOYEE
+    @PostMapping
+    public Employee createEmployee(@RequestBody Employee employee) {
+        return employeeService.save(employee);
+    }
+
     // VIEW EMPLOYEE BY ID
     @GetMapping("/{id}")
     public Employee getEmployee(@PathVariable Long id) {

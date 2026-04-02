@@ -7,25 +7,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class CountryValidationService {
 
-    public void validateEmployeeAgainstCountryRules(
-            Country country,
-            Integer workingHours,
-            Double salary
-    ) {
+    public void validate(Country country, double salary, int workingHours) {
 
-        if (country.getMaxWorkingHoursPerDay() != null &&
-                workingHours > country.getMaxWorkingHoursPerDay()) {
+        if (country.getMinimumSalary() > 0 && salary < country.getMinimumSalary()) {
             throw new CountryRuleViolationException(
-                    "Working hours exceed limit for " + country.getName()
-            );
+                    "Salary is below the minimum allowed for " + country.getName());
         }
 
-        if (country.getMinimumSalary() != null &&
-                salary < country.getMinimumSalary()) {
+        if (country.getMaxWorkingHoursPerDay() > 0 && workingHours > country.getMaxWorkingHoursPerDay()) {
             throw new CountryRuleViolationException(
-                    "Salary below minimum wage for " + country.getName()
-            );
+                    "Working hours exceed the maximum allowed for " + country.getName());
         }
     }
 }
-
